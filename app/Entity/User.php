@@ -40,16 +40,8 @@ class User implements UserInterface
     #[Column(name: 'updated_at')]
     private \DateTime $updatedAt;
 
-    #[OneToMany(mappedBy: 'user', targetEntity: Category::class)]
-    private Collection $categories;
-
-    #[OneToMany(mappedBy: 'user', targetEntity: Transaction::class)]
-    private Collection $transactions;
-
     public function __construct()
     {
-        $this->categories   = new ArrayCollection();
-        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): int
@@ -113,27 +105,4 @@ class User implements UserInterface
         return $this->updatedAt;
     }
 
-    public function getCategories(): ArrayCollection|Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): User
-    {
-        $this->categories->add($category);
-
-        return $this;
-    }
-
-    public function getTransactions(): ArrayCollection|Collection
-    {
-        return $this->transactions;
-    }
-
-    public function addTransaction(Transaction $transaction): User
-    {
-        $this->transactions->add($transaction);
-
-        return $this;
-    }
 }

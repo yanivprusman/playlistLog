@@ -38,7 +38,7 @@ return [
         $router($app);
 
         $addMiddlewares($app);
-
+        // echo 'in container bindings ' . PHP_EOL;
         return $app;
     },
     Config::class                       => create(Config::class)->constructor(require CONFIG_PATH . '/app.php'),

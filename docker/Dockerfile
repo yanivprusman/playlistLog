@@ -1,8 +1,8 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
-ARG USER
-ARG USER_ID
-ARG GROUP_ID
+ARG USER=1000
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
 WORKDIR /var/www
 
@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     vim \
-    libicu-dev
+    libicu-dev \
+    npm
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     && apt-get install nodejs -y

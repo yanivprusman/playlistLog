@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  app:
+  107-app:
     build:
       context: ""
       dockerfile: Dockerfile
@@ -9,27 +9,27 @@ services:
         USER_ID: '${WWWUSER:-1000}'
         GROUP_ID: '${WWWGROUP:-1000}'
         USER: '${USER:-whoami}'
-    container_name: expennies-app
+    container_name: 107-app
     restart: always
     working_dir: /var/www/
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "9003:9003"
+      - "9107:9003"
     volumes:
       - ../:/var/www
       - ./local.ini:/usr/local/etc/php/conf.d/local.ini
-  nginx:
+  107-nginx:
     image: nginx:1.19-alpine
-    container_name: expennies-nginx
+    container_name: 107-nginx
     restart: always
     ports:
-      - "8000:80"
+      - "8107:80"
     volumes:
       - ../:/var/www
       - ./nginx:/etc/nginx/conf.d
-  db:
-    container_name: expennies-db
+  107-db:
+    container_name: 107-db
     image: mysql:8.0
     volumes:
       - ./storage/mysql:/var/lib/mysql
@@ -37,4 +37,4 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3107:3306"

@@ -15,7 +15,10 @@ class HomeController
     }
 
     public function index(Request $request, Response $response): Response
-    {
-        return $this->twig->render($response, 'dashboard.twig');
+    {   
+        echo "Asdf";
+
+        // return $this->twig->render($response, 'dashboard.twig');
+        return $this->twig->render($response, 'index.twig');
     }
 }
