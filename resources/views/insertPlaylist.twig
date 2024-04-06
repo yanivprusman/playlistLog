@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <header>
+        <h1>Playlist Log</h1>
+    </header>
+    
+    <main>
+        <h2>{{ main_heading }}</h2>
+        <p>{{ main_content }}</p>
+        <form action="/" method="GET">
+            <label for="playlist_id">Enter Playlist ID:</label>
+            <input type="text" id="playlist_id" name="playlist_id" value="PLr3d3QYzkw2xabQRUpcZ_IBk9W50M9pe-">
+            <button type="submit">Submit</button>
+        </form>
+        {% if playlist_id %}
+        <p>Playlist ID: {{ playlist_id }}</p>
+        {% endif %}
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>

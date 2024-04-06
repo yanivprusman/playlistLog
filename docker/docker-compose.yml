@@ -19,6 +19,7 @@ services:
     volumes:
       - ../:/var/www
       - ./local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ../../../101_include:/var/www/include
   107-nginx:
     image: nginx:1.19-alpine
     container_name: 107-nginx

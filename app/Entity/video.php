@@ -25,36 +25,61 @@ use Doctrine\ORM\Mapping\Table;
 class Video 
 {
     #[Id, Column(options: ['unsigned' => true]), GeneratedValue]
-    #[ManyToOne(targetEntity:Playlist::class, inversedBy:'videos')]
     private int $id;
+    
+    #[Column(nullable:true)]
+    private ?int $theIndex;
+    
+    #[Column(nullable:true)]
+    private ?bool $seen;
+    
+    #[Column(nullable:true)]
+    private ?bool $rewatch;
+    
+    #[Column(nullable:true)]
+    private ?string $title;
 
-    #[Column(unique:true,name:'playlist_id')]
-    private string $playlistId;
+    #[Column(name:'paused_at',nullable:true)]
+    private ?string $pausedAt;
 
-    #[Column(name:'video_id',unique:false)]
-    private string $videoId;
+    #[Column(nullable:true)]
+    private ?string $link;
 
-    #[Column]
-    private string $title;
+    #[ManyToOne(inversedBy:'videos')]
+    private Playlist $playlist;
+    
+    #[Column(name:'video_id',nullable:true)]
+    private ?string $videoId;
 
-    #[Column]
-    private bool $seen;
+    #[Column(nullable:true)]
+    private ?string $length;
 
-    #[Column]
-    private bool $rewatch;
-
-    #[Column(name:'paused_at')]
-    private string $pausedAt;
-
-    #[Column]
-    private string $length;
     public function __construct()
     {
+        $this->theIndex = null;
+        $this->seen = null;
+        $this->rewatch = null;
+        $this->title = null;
+        $this->pausedAt = null;
+        $this->link = null;
+        $this->videoId = null;
+        $this->length = null;
     }
 
     public function getId(): int
     {
         return $this->id;
+    }
+    
+    public function getIndex(): ?int
+    {
+        return $this->theIndex;
+    }
+
+    public function setIndex(int $index): Video
+    {
+        $this->theIndex = $index;
+        return $this;
     }
 
     public function getTitle(): string
@@ -68,4 +93,89 @@ class Video
 
         return $this;
     }
+
+    public function getVideoId(): string
+    {
+        return $this->videoId;
+    }
+
+    public function setVideoId(string $videoId): Video
+    {
+        $this->videoId = $videoId;
+
+        return $this;
+    }
+
+    public function getPlaylist(): Playlist
+    {
+        return $this->playlist;
+    }
+
+    public function setPlaylist(Playlist $playlist): Video
+    {
+        $this->playlist = $playlist;
+
+        return $this;
+    }
+
+    public function getSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(bool $seen): Video
+    {
+        $this->seen = $seen;
+
+        return $this;
+    }
+
+    public function getPausedAt(): ?string
+    {
+        return $this->pausedAt;
+    }
+
+    public function setPausedAt(string $pausedAt): Video
+    {
+        $this->pausedAt = $pausedAt;
+
+        return $this;
+    }
+
+    public function getReWatch(): ?bool
+    {
+        return $this->rewatch;
+    }
+
+    public function setReWatch(bool $rewatch): Video
+    {
+        $this->rewatch = $rewatch;
+
+        return $this;
+    }
+
+    public function getLength(): ?string
+    {
+        return $this->length;
+    }
+
+    public function setLength(string $length): Video
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(string $link): Video
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
 }

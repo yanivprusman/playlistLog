@@ -32,12 +32,12 @@ class Playlist
     #[Column]
     private string $title;
 
-    // #[ManyToMany(targetEntity:Video::class,mappedBy:'playlistId')]
-    #[OneToMany(targetEntity:Video::class,mappedBy:'id')]
+    #[OneToMany(targetEntity:Video::class,mappedBy:'playlist',cascade:['persist','remove'])]
     private Collection $videos;
 
     public function __construct()
     {
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): int
@@ -55,5 +55,34 @@ class Playlist
         $this->title = $title;
 
         return $this;
+    }
+    public function getPlaylistId(): string
+    {
+        return $this->playlistId;
+    }
+
+    public function setPlaylistId(string $playlistId): Playlist
+    {
+        $this->playlistId = $playlistId;
+
+        return $this;
+    }
+    
+    public function addVideo(Video $video){
+        $this->videos->add($video);
+
+    }
+
+    public function setVideos(Collection $videos): Playlist
+    {
+        $this->videos = $videos;
+
+        return $this;
+    }
+    
+    public function getVideos():Collection{
+        
+        return $this->videos;
+
     }
 }

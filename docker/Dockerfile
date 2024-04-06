@@ -33,3 +33,4 @@ RUN useradd -ms /bin/bash --no-user-group -g $GROUP_ID -u 1337 $USER
 RUN usermod -u $USER_ID $USER
 
 USER $USER
+RUN bash
