@@ -4,20 +4,24 @@ declare(strict_types = 1);
 
 namespace App\Controllers;
 
+use DateInterval;
+use App\Entity\User;
 use G_H_PROJECTS_INCLUDE\G_h_projects_include;
 use App\Entity\Playlist;
 use App\Entity\Video;
-use App\Enum\AppEnvironment;
 use App\TutorialOldVersion;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
 use Doctrine\ORM\EntityManager;
+use App\Contracts\SessionInterface;
 class YoutubeController
 {
+    private bool $setup = true;
     public function __construct(
         private readonly Twig $twig,
         private readonly EntityManager $entityManager,
+        private readonly SessionInterface $session
         )
     {
     }
@@ -27,15 +31,31 @@ class YoutubeController
     // $title = YoutubeHelper::getTitleFromListId($playlist_id);
     // $playlist_id = 'asdf';
     // return $this->twig->render($response, 'setup.twig',data:['title'=>'title']);
-    // $this->setup();
     
     public function index(Request $request, Response $response): Response
     {   
+        // $imagePath = 'https://i.ytimg.com/vi/D1Ab-iP8Ra0/default.jpg';
+        // echo '<img src="' . $imagePath .'" alt="Description of the image">';
+
+        $queryParams = $request->getQueryParams();
+        
+        if ((isset($queryParams['action'])) && ($queryParams['action']==='remove')) {
+            $playlistId = $queryParams['playlist_id'];
+            $this->removePlaylist($playlistId);
+        }
+        if($this->setup){
+            $this->setup();
+            // var_dump($userId);
+            // return $response;
+        }
+        // $userId =  $this->session->get('user');
+        $user =  $request->getAttribute('user');
         $playlist_id = isset($_GET['playlist_id']) ? $_GET['playlist_id'] : null;
         if ($playlist_id){// if user entered a playlist id
             // search for playlistId in database
-            $playlist =$this->entityManager->getRepository(Playlist::class)->findBy(
-                ['playlistId'=>$playlist_id])[0]??null;
+            $playlist =$this->entityManager->getRepository(Playlist::class)->findBy([
+                'playlistId'=>$playlist_id, 
+                'user'=>$user->getId()])[0]??null;
             if($playlist){ //if exists load from database
                 $playlist = $playlist->getVideos()->toArray();
                 $this->echoGHProjects();
@@ -45,7 +65,8 @@ class YoutubeController
                 if(count($apiPlaylist)===0){ /** if not exist in api error */
                     echo 'wrong playlist id' . PHP_EOL;
                 }else{ // add playlistrecord and display it  
-                    $this->addPlaylistFromApi(apiPlaylist:$apiPlaylist,playlist_id:$playlist_id);
+                    // $user = $request->getAttribute('user');
+                    $this->addPlaylistFromApi(apiPlaylist:$apiPlaylist,playlist_id:$playlist_id,user:$user);
                 }
             }
             // var_dump($playList);
@@ -61,6 +82,38 @@ class YoutubeController
             return $this->twig->render($response, 'insertPlaylist.twig');
         }
     }
+    public function action(Request $request, Response $response): Response{
+        $user =  $request->getAttribute('user');
+        $fetchDecoded = json_decode(file_get_contents('php://input'), true);//bool ascociative array
+        $row = $fetchDecoded['methodArguments']['row'];
+        $action = $fetchDecoded['methodArguments']['action'];
+        $value = $fetchDecoded['methodArguments']['value'];
+        $playlistId = $fetchDecoded['methodArguments']['playlistId'];
+        $playlist = $this->entityManager->getRepository(Playlist::class)->findBy([
+            'playlistId'=>$playlistId, 
+            'user'=>$user->getId()])[0]??null;
+        $video = $this->entityManager->getRepository(Video::class)->findBy([
+            'playlist'=>$playlist,
+            'theIndex'=>$row
+            ])[0];
+        switch($action){
+            case 'toggleSeen':
+                $video->setSeen($value===1);
+                echo json_encode([''=>'']);
+                break;
+            case 'toggleReWatch':
+                $video->setReWatch($value===1);
+                echo json_encode([''=>'']);
+                break;
+            case 'pausedAt':
+                $video->setPausedAt($value);
+                echo json_encode([''=>'']);
+                break;
+            }
+        $this->entityManager->persist($playlist);
+        $this->entityManager->flush();
+        return $response;
+    }
     public function echoGHProjects(){
         $root = dirname(__DIR__) . DIRECTORY_SEPARATOR;
         // $g_h_root = dirname($root) . "/101_include" . DIRECTORY_SEPARATOR;
@@ -68,27 +121,33 @@ class YoutubeController
         G_h_projects_include::getInstance($g_h_root)->echo();
 
     }
-    public function addPlaylistFromApi(array $apiPlaylist, string $playlist_id=''){
+    public function addPlaylistFromApi(array $apiPlaylist, string $playlist_id,User $user){
         $playlist = new Playlist();
         $playlist->setTitle($apiPlaylist[0]['snippet']['channelTitle']);
         $playlist->setPlaylistId($playlist_id);
+        $playlist->setUser($user);
         $this->entityManager->persist($playlist);
         foreach($apiPlaylist as $apiVideo){
+            $videoInfo = YoutubeHelper::getVideoInfo(
+                videoId:$apiVideo['snippet']['resourceId']['videoId'],
+                apiKey:(new YoutubeHelper())->apiKey);
             $video = (new Video())
                 ->setPlaylist($playlist)
                 ->setVideoId($apiVideo['snippet']['resourceId']['videoId'])
                 ->setTitle($apiVideo['snippet']['title'])
-                ->setLength('123')
+                ->setLength((string)$videoInfo['durationInSeconds'])
                 ->setIndex($apiVideo['snippet']['position']);
             $playlist->addVideo($video);
         }
         $this->entityManager->flush();
         $playlist = $playlist->getVideos()->toArray();
+        $this->echoGHProjects();
         $tutorialOldVersion = new  TutorialOldVersion($playlist);    
     }
     public function setup(){
-        $this->setupRemovePlaylist();
-        exit;
+        $this->setupRemovePlaylist('PLfq-wQambEIdTavNPl3j8kBIV9zv7HjbV');
+        // $this->setupRemovePlaylist('PLkahZjV5wKe-lnPv1TseLsmMexz3IO81Q');
+        // exit;
         // $video = new Video();
         // $video = new Class101();
         // var_dump($video);
@@ -105,15 +164,26 @@ class YoutubeController
         // $this->entityManager->persist($playlist);
         // $this->entityManager->flush();
     }
-    public function setupRemovePlaylist(){
-        $playlist_id = 'RDQMgEzdN5RuCXE';
+    public function setupRemovePlaylist(string $playlistId=''){
+        
+        // $playlistId = 'RDQMgEzdN5RuCXE';                   //200+
+        // $playlistId = 'PLkahZjV5wKe-lnPv1TseLsmMexz3IO81Q';//12
+        // $playlistId = 'PLr3d3QYzkw2xabQRUpcZ_IBk9W50M9pe-';//138
         $playlist =$this->entityManager->getRepository(Playlist::class)->findBy(
-            ['playlistId'=>$playlist_id])[0]??null;
+            ['playlistId'=>$playlistId])[0]??null;
         if($playlist){ 
             $this->entityManager->remove($playlist);
             $this->entityManager->flush();
         }
 
+    }
+    public function removePlaylist(string $playlistId=''){
+        $playlist =$this->entityManager->getRepository(Playlist::class)->findBy(
+            ['playlistId'=>$playlistId])[0]??null;
+        if($playlist){ 
+            $this->entityManager->remove($playlist);
+            $this->entityManager->flush();
+        }
     }
     public function setupAddVideo(){
         $playlist = $this->setupGetPlaylist();
@@ -147,6 +217,13 @@ class YoutubeController
 }
 
 class YoutubeHelper{
+    static $api_base = 'https://www.googleapis.com/youtube/v3/videos';
+    static $thumbnail_base = 'https://i.ytimg.com/vi/';
+    static $thumbnailDefault = '/default.jpg';
+    static $thumbnailMqDefault = '/mqDefault.jpg';
+    static $thumbnailHqDefault = '/hqDefault.jpg';
+    static $thumbnailSdDefault = '/sdDefault.jpg';
+    static $thumbnailMaxresDefault = '/maxresDefault.jpg';
     public function __construct(
         public ?string $playlistId = null,
         public ?string $apiKey = null,        
@@ -185,7 +262,7 @@ class YoutubeHelper{
         $youtubeHelper = new YoutubeHelper(playlistId:$playlistId,apiKey:$apiKey);
         $apiKey = $youtubeHelper->apiKey;
         $playlistId = $youtubeHelper->playlistId;
-        $apiUrl = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$apiKey";
+        $apiUrl = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=$playlistId&key=$apiKey&maxResults=200";
         $allResults = [];
         // $response = file_get_contents($apiUrl);
         do {
@@ -209,33 +286,32 @@ class YoutubeHelper{
                 return [];
             }
         } while (count($allResults)<200);    
+        // } while (false);   
+         
         return $allResults;
     }
-    // public static function getTitleFromListId(
-    //     string $playlistId = null,
-    //     string $apiKey = null,        
-    //     ):string{
-    //     $youtubeHelper = new YoutubeHelper(playlistId:$playlistId,apiKey:$apiKey);
-    //     $apiKey = $youtubeHelper->apiKey;
-    //     $playlistId = $youtubeHelper->playlistId;
-    //     $apiUrl = "https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=$playlistId&key=$apiKey";
-    //     $ch = curl_init($apiUrl);
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //     $response = curl_exec($ch);
-    //     curl_close($ch);
-    //     if ($response) {
-    //         $data = json_decode($response, true);
+    public static function getVideoInfo($videoId,$apiKey)
+    {
+        $params =[
+            'part' => 'contentDetails',
+            'id' => $videoId,
+            'key' => $apiKey,
+        ];
+
+        $apiUrl = self::$api_base . '?' . http_build_query($params);
+        $result = json_decode(@file_get_contents($apiUrl), true);
+
+        if(empty($result['items'][0]['contentDetails']))
+            return null;
+        $info = $result['items'][0]['contentDetails'];
+
+        $interval = new DateInterval($info['duration']);
         
-    //         if (isset($data['items'][0]['snippet']['title'])) {
-    //             $playlistTitle = $data['items'][0]['snippet']['title'];
-    //             return "$playlistTitle";
-    //         } else {
-    //             return "Playlist not found or title not available.";
-    //         }
-    //     } else {
-    //         echo "Error fetching data from the YouTube API.";
-    //     }        
-    // }
+        $smallInfo['durationInSeconds'] = $interval->h * 3600 + $interval->i * 60 + $interval->s;
+        $smallInfo['thumbnail']         = self::$thumbnail_base . $videoId;
+
+        return $smallInfo;
+    }
 }
 
 

@@ -36,7 +36,7 @@ class Video
     #[Column(nullable:true)]
     private ?bool $rewatch;
     
-    #[Column(nullable:true)]
+    #[Column(nullable:true,options:["collation"=>"utf8mb4_unicode_ci"])]
     private ?string $title;
 
     #[Column(name:'paused_at',nullable:true)]
@@ -53,6 +53,9 @@ class Video
 
     #[Column(nullable:true)]
     private ?string $length;
+
+    // #[Column(nullable:true)]
+    // private ?string $thumbnail;
 
     public function __construct()
     {
@@ -114,7 +117,7 @@ class Video
     public function setPlaylist(Playlist $playlist): Video
     {
         $this->playlist = $playlist;
-
+        
         return $this;
     }
 

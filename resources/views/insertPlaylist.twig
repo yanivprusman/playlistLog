@@ -16,7 +16,8 @@
         <form action="/" method="GET">
             <label for="playlist_id">Enter Playlist ID:</label>
             <input type="text" id="playlist_id" name="playlist_id" value="PLr3d3QYzkw2xabQRUpcZ_IBk9W50M9pe-">
-            <button type="submit">Submit</button>
+            <button type="submit" name="action" value="submit">Submit</button>
+            <button type="submit" name="action" value="remove">Remove Playlist</button>
         </form>
         {% if playlist_id %}
         <p>Playlist ID: {{ playlist_id }}</p>

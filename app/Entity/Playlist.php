@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Entity\User;
+use Doctrine\ORM\Mapping\ManyToOne;
 use App\Contracts\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +28,7 @@ class Playlist
     #[Id, Column(options: ['unsigned' => true]), GeneratedValue]
     private int $id;
 
-    #[Column(unique:true,name:'playlist_id')]
+    #[Column(name:'playlist_id')]
     private string $playlistId;
 
     #[Column]
@@ -34,6 +36,9 @@ class Playlist
 
     #[OneToMany(targetEntity:Video::class,mappedBy:'playlist',cascade:['persist','remove'])]
     private Collection $videos;
+
+    #[ManyToOne(inversedBy:'playlists')]
+    private User $user;
 
     public function __construct()
     {
@@ -83,6 +88,15 @@ class Playlist
     public function getVideos():Collection{
         
         return $this->videos;
+    }
 
+    public function setUser(User $user):Playlist{
+        $this->user = $user;
+        
+        return $this;
+    }
+
+    public function getUser(){
+        return $this->user;
     }
 }

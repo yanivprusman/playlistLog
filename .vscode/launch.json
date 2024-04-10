@@ -11,7 +11,7 @@
             "port": 9003,
             "pathMappings": {
                 "/var/www": "${workspaceFolder}",
-                "/var/www/include": "${workspaceFolder}/../../101_include"
+                "/var/www/include": "${workspaceFolder}/../../101_include",
             }
 
         },

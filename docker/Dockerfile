@@ -27,7 +27,7 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 COPY xdebug.ini "${PHP_INI_DIR}/conf.d"
-
+RUN groupadd -g 1000 docker
 RUN groupadd --force -g $GROUP_ID $USER
 RUN useradd -ms /bin/bash --no-user-group -g $GROUP_ID -u 1337 $USER
 RUN usermod -u $USER_ID $USER

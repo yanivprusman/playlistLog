@@ -72,9 +72,9 @@ class TutorialOldVersion{
     <div id="context-menu">
         <ul>
             <li id="context-menu-title" style="color:brown; text-decoration:underline;"></li>
-            <li onclick="toggleSeen()" style="cursor: pointer;">Seen</li>
-            <li onclick="pausedAt()" style="cursor: pointer;">Paused at</li>
-            <li onclick="toggleReWatch()" style="cursor: pointer;">Rewatch</li>
+            <li onclick="send('toggleSeen')" style="cursor: pointer;">Seen</li>
+            <li onclick="send('pausedAt')" style="cursor: pointer;">Paused at</li>
+            <li onclick="send('toggleReWatch')" style="cursor: pointer;">Rewatch</li>
         </ul>
     </div>
         <textarea id="sql" class="adjustableText" id="myInput" placeholder="sql:" style="display:none"></textarea>
@@ -160,22 +160,55 @@ class TutorialOldVersion{
     document.addEventListener("click", function(e) {
         contextMenu.style.display = "none";
     });
-    function toggleSeen(){
+    function send(action){
         var row=get("context-menu-title").html();
-        var state=get("seen_"+row).html();
-        if (state == 1){
-            state = 0;
+        var element;
+        switch(action){
+            case 'toggleSeen':
+                element = "seen_"+row;
+                break;
+            case 'toggleReWatch':
+                element = "reWatch_"+row;
+                break;
+            case 'pausedAt':
+                element = "pausedAt_"+row;
+                break;
+        }
+        var value=get(element).html();
+        if ((action === 'toggleSeen')||(action === 'toggleReWatch')){
+            if (value == 1){
+                value = 0;
+            }else{
+                value = 1;
+            };
         }else{
-            state = 1;
-        };
-        var sql="UPDATE playlist SET seen = " + state + " WHERE `index` = " + row;
+            value = prompt("Set paused at");
+        }
+        var playlistId = getPlaylistIdFromURI();
         <?php
-            $fetch = new Fetch(class: DoSql::class,method: 'doSql',echoReturn: false);
-            $fetch->addMethodArgument('sql','sql',variable:true);
+            // $fetch = new Fetch(class: DoSql::class,method: 'doSql',echoReturn: false);
+            $fetch = new Fetch(echoReturn: false);
+            $fetch->addMethodArgument('row','row',variable:true);
+            $fetch->addMethodArgument('action','action',variable:true);
+            $fetch->addMethodArgument('value','value',variable:true);
+            $fetch->addMethodArgument('playlistId','playlistId',variable:true);
             $fetch->addThen(function(){
                 ?><script>
-                get("seen_"+row).html(state);
-                console.log('Record updated successfully.');
+                switch(action){
+                    case 'toggleSeen':
+                        get("seen_"+row).html(value);
+                        console.log('Record updated successfully.');
+                        break;
+                    case 'toggleReWatch':
+                        get("reWatch_"+row).html(value);
+                        console.log('Record updated successfully.');
+                        break;
+                    case 'pausedAt':
+                        get("pausedAt_"+row).html(value);
+                        console.log('Record updated successfully.');
+                        break;
+
+                }
                 </script><?php
             });
             $fetch->catch = function(){
@@ -202,26 +235,9 @@ class TutorialOldVersion{
             $fetch->fetch();
         ?>
     }
-    function toggleReWatch(){
-        var row=get("context-menu-title").html();
-        var state=get("reWatch_"+row).html();
-        if (state == 1){
-            state = 0;
-        }else{
-            state = 1;
-        };
-        var sql="UPDATE playlist SET re_watch = '" + state + "' WHERE `index` = " + row;
-        <?php
-            $fetch = new Fetch(class: DoSql::class,method: 'doSql',echoReturn: false);
-            $fetch->addMethodArgument('sql','sql',variable:true);
-            $fetch->addThen(function(){
-                ?><script>
-                get("reWatch_"+row).html(state);
-                console.log('Record updated successfully.');
-                </script><?php
-            });
-            $fetch->fetch();
-        ?>
+    function getPlaylistIdFromURI() {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('playlist_id');
     }
 </script>
 <?php

@@ -1,0 +1,13 @@
+APP_NAME=youtube
+APP_VERSION=3E
+APP_DEBUG=1
+APP_ENV=development
+DB_HOST=107-db
+# DB_HOST=an-expennies-db
+# DB_HOST=localhost
+DB_USER=root
+DB_PASS=root
+DB_NAME=youtube
+API_KEY = PL4cUxeGkcC9jsz4LDYc6kv3ymONOKxwBU
+PLAY_LIST_ID = PL4cUxeGkcC9jsz4LDYc6kv3ymONOKxwBU
+YOUTUBE_PLAYLISTS_DATABASE_NAME = youtube_playlists_log
