@@ -57,9 +57,9 @@ class YoutubeController
                 'playlistId'=>$playlist_id, 
                 'user'=>$user->getId()])[0]??null;
             if($playlist){ //if exists load from database
-                $playlist = $playlist->getVideos()->toArray();
+                $playlistArray = $playlist->getVideos()->toArray();
                 $this->echoGHProjects();
-                $tutorialOldVersion = new  TutorialOldVersion($playlist);
+                $tutorialOldVersion = new  TutorialOldVersion(playList:$playlistArray,title:$playlist->getTitle());
             }else{// if not exists load from api
                 $apiPlaylist = YoutubeHelper::getPlaylistFromListId($playlist_id);
                 if(count($apiPlaylist)===0){ /** if not exist in api error */
@@ -79,7 +79,14 @@ class YoutubeController
             return $response;
         }
         else{
-            return $this->twig->render($response, 'insertPlaylist.twig');
+            $repository = $this->entityManager->getRepository(Playlist::class);
+            $playlists = $repository->findBy(['user'=>$user]);
+            // var_dump( $playlists[0]->getTitle());
+            // exit;
+            // var_dump( $playlists);
+            return $this->twig->render($response, 'insertPlaylist.twig',data:[
+                'playlists'=>$playlists                
+            ]);
         }
     }
     public function action(Request $request, Response $response): Response{

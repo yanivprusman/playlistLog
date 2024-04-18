@@ -15,13 +15,22 @@
         <p>{{ main_content }}</p>
         <form action="/" method="GET">
             <label for="playlist_id">Enter Playlist ID:</label>
-            <input type="text" id="playlist_id" name="playlist_id" value="PLr3d3QYzkw2xabQRUpcZ_IBk9W50M9pe-">
+            <input type="text" id="playlist_id" name="playlist_id" value="">
             <button type="submit" name="action" value="submit">Submit</button>
             <button type="submit" name="action" value="remove">Remove Playlist</button>
         </form>
-        {% if playlist_id %}
-        <p>Playlist ID: {{ playlist_id }}</p>
-        {% endif %}
+        Registered Playlists <br>
+        {% for playlist in playlists %}
+            <div onclick="
+                document.getElementById('playlist_id').value = '{{playlist.playlistId}}';
+                //alert();
+                //document.getElementById('playlist_id').textContent = 'Playlist ID: ';
+                //alert(document.getElementById('playlist_id').textContent);
+                //alert('after');
+            ">
+                {{ loop.index }}. {{ playlist.title ~ ' ID: ' ~ playlist.playlistId }}<br>
+            </div>
+        {% endfor %}
     </main>
     <footer>
     </footer>

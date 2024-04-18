@@ -17,14 +17,16 @@ class TutorialOldVersion2{
 }
 class TutorialOldVersion{
     public function __construct(
-        private array $playList)
+        private array $playList=[],
+        private string $title='')
     {
         new G_h_projects_include();
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>program with gio</title>
+        <!-- <title>program with gio</title> -->
+        <title><?php echo $this->title;?></title>
         <style>
             table {
                 width: 100%;

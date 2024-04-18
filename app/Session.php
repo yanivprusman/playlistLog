@@ -31,14 +31,16 @@ class Session implements SessionInterface
                 'samesite' => $this->options->sameSite->value,
             ]
         );
-
+        
         if (! empty($this->options->name)) {
             session_name($this->options->name);
         }
-
+        // var_dump($_SESSION);
         if (! session_start()) {
             throw new SessionException('Unable to start the session');
         }
+        // var_dump($_SESSION);
+
     }
 
     public function save(): void
