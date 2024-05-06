@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace App;
 require_once __DIR__ . '/../vendor/autoload.php';
-use G_H_PROJECTS_INCLUDE\G_h_projects_include;
-use G_H_PROJECTS_INCLUDE\Fetch;
-use G_H_PROJECTS_INCLUDE\DoSql;
+use G_H_Projects\G_h_projects_include;
+use G_H_Projects\Fetch;
+use G_H_Projects\DoSql;
 class TutorialOldVersion2{
     public function __construct(){
         echo 'in TutorialOldVersion' . PHP_EOL;

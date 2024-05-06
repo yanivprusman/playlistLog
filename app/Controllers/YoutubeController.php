@@ -6,7 +6,8 @@ namespace App\Controllers;
 
 use DateInterval;
 use App\Entity\User;
-use G_H_PROJECTS_INCLUDE\G_h_projects_include;
+use G_H_Projects\G_h_projects_include;
+// use G_H_PROJECTS_INCLUDE\G_h_projects_include;
 use App\Entity\Playlist;
 use App\Entity\Video;
 use App\TutorialOldVersion;
@@ -42,13 +43,11 @@ class YoutubeController
         if ((isset($queryParams['action'])) && ($queryParams['action']==='remove')) {
             $playlistId = $queryParams['playlist_id'];
             $this->removePlaylist($playlistId);
+            return $response;
         }
         if($this->setup){
             $this->setup();
-            // var_dump($userId);
-            // return $response;
         }
-        // $userId =  $this->session->get('user');
         $user =  $request->getAttribute('user');
         $playlist_id = isset($_GET['playlist_id']) ? $_GET['playlist_id'] : null;
         if ($playlist_id){// if user entered a playlist id
