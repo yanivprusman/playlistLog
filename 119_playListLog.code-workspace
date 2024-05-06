@@ -1,0 +1,21 @@
+{
+	"folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../101_include"
+        }
+    ],
+    "settings": {
+        "sshfs.configs": [
+            {
+                "name": "ubuntu3",
+                "host": "195.28.180.164",
+                "root": "/root/",
+                "username": "root",
+                "privateKeyPath": "c:\\Users\\yaniv\\.ssh\\id_ed25519"
+            }
+        ]
+    }
+}

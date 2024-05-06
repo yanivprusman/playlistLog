@@ -2,7 +2,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "G_H_PROJECTS_INCLUDE\\": "include/"
+            "G_H_PROJECTS_INCLUDE\\": "../101_include/"
         }
     },
     "autoload-dev": {
