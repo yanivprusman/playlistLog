@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d995fa97c9b1e0af0369680dcdf6c2a0",
+    "content-hash": "22bd692a6a7eba12b7b4fff6bcba07a4",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1121,6 +1121,42 @@
                 "source": "https://github.com/php-fig/http-message-util/tree/1.1.5"
             },
             "time": "2020-11-24T22:02:12+00:00"
+        },
+        {
+            "name": "g_h_projects/include",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yanivprusman/include.git",
+                "reference": "98c84502cab509a408659d13cbeaf9f819860209"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yanivprusman/include/zipball/98c84502cab509a408659d13cbeaf9f819860209",
+                "reference": "98c84502cab509a408659d13cbeaf9f819860209",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "G_H_Projects\\": "./"
+                }
+            },
+            "license": [
+                "My Custom License"
+            ],
+            "authors": [
+                {
+                    "name": "yaniv",
+                    "email": "yanivprusman3@gmail.com"
+                }
+            ],
+            "description": "A simple PHP package ",
+            "support": {
+                "source": "https://github.com/yanivprusman/include/tree/1.0.0",
+                "issues": "https://github.com/yanivprusman/include/issues"
+            },
+            "time": "2024-04-26T07:44:25+00:00"
         },
         {
             "name": "graham-campbell/result-type",
