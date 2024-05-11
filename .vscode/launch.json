@@ -9,11 +9,19 @@
             "type": "php",
             "request": "launch",
             "port": 9003,
+            "stopOnEntry": false
+
+        },
+        {
+            "name": "Listen for Xdebug 2",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
             "pathMappings": {
                 "/var/www": "${workspaceFolder}",
                 "/var/www/include": "${workspaceFolder}/../../101_include",
             },
-            "stopOnEntry": true
+            "stopOnEntry": false
 
         },
         {

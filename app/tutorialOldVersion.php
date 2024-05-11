@@ -5,16 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use G_H_Projects\G_h_projects_include;
 use G_H_Projects\Fetch;
 use G_H_Projects\DoSql;
-class TutorialOldVersion2{
-    public function __construct(){
-        echo 'in TutorialOldVersion' . PHP_EOL;
-        echo 'B4' . PHP_EOL;
-        new G_h_projects_include();
-        $fetch = new Fetch(class: DoSql::class,method: 'doSql',echoReturn: false);
-
-        echo 'After' . PHP_EOL;
-    }
-}
 class TutorialOldVersion{
     public function __construct(
         private array $playList=[],
@@ -118,10 +108,11 @@ class TutorialOldVersion{
                             ?> 
                             <!-- <td style=" text-align: left; cursor: pointer;" style=" text-decoration: none;color: inherit;" 
                                 onclick="window.open('< ?php echo $g_h_outer_root . "../103_gio/views/show_youtube.php?videoId=" . $video->'videoId'] ?>', '_blank');">< ?php echo $video->'description'] ?></td> -->
-                            <td style=" text-align: left; cursor: pointer;" style=" text-decoration: none;color: inherit;" 
-                                onclick="window.open('<?php 
-                                    $gHProjectsInclude = new G_h_projects_include(host:'localhost');
-                                    echo G_h_projects_include::$g_h_outer_root . "../103_gio/views/show_youtube.php?videoId=" . $video->getVideoId() ?>', '_blank');"><?php echo $video->getTitle() ?></td>
+                            <td  style=" text-align: left; cursor: pointer;" style=" text-decoration: none;color: inherit;" 
+                                onclick="window.open('<?php echo 'show_youtube?videoId=' . $video->getVideoId() ?>', '_blank');">
+                                    <!-- $gHProjectsInclude = new G_h_projects_include(host:'localhost'); -->
+                                    <!-- echo G_h_projects_include::$g_h_outer_root . "../103_gio/views/show_youtube.php?videoId=" . $video->getVideoId() ?>', '_blank');"> -->
+                                    <?php echo $video->getTitle() ?></td>
                         <?php } ?>
                     </tr>
                 <?php endforeach ?>
