@@ -9,6 +9,7 @@ use G_H_Projects\G_h_projects_include;
 
 $x = new G_h_projects_include();
 $x->echo();
+echo 'asdf';
 
 // $container = require __DIR__ . '/../bootstrap.php';
 // $container->get(App::class)->run();
