@@ -9,8 +9,13 @@ use G_H_Projects\G_h_projects_include;
 
 $x = new G_h_projects_include();
 $x->echo();
-echo 'asdf';
+// echo 'asdf';
 
-// $container = require __DIR__ . '/../bootstrap.php';
-// $container->get(App::class)->run();
+$container = require __DIR__ . '/../bootstrap.php';
+$app = $container->get(App::class);
+// $app->get
+// $app->setBasePath('/path/to/your/public');
+// $app->add(new Slim\Middleware\StaticMiddleware());
+
+$app->run();
 
