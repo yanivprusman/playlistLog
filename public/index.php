@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 require ('../vendor/autoload.php');
-
 use App\Enum\AppEnvironment;
 use Slim\App;
 use G_H_Projects\G_h_projects_include;
-
-$x = new G_h_projects_include();
-$x->echo();
+// phpinfo();
+// exit();
+// $x = new G_h_projects_include();
+// $x->echo();
 // echo 'asdf';
 
 $container = require __DIR__ . '/../bootstrap.php';
