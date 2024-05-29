@@ -1124,16 +1124,16 @@
         },
         {
             "name": "g_h_projects/include",
-            "version": "1.0.1",
+            "version": "1.0.601",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yanivprusman/include.git",
-                "reference": "f0278428a000c82e511a83e38612dce2754ea3ee"
+                "reference": "1b0fa63ea2227dfb8f5466e8b6b1374201651d0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yanivprusman/include/zipball/f0278428a000c82e511a83e38612dce2754ea3ee",
-                "reference": "f0278428a000c82e511a83e38612dce2754ea3ee",
+                "url": "https://api.github.com/repos/yanivprusman/include/zipball/1b0fa63ea2227dfb8f5466e8b6b1374201651d0c",
+                "reference": "1b0fa63ea2227dfb8f5466e8b6b1374201651d0c",
                 "shasum": ""
             },
             "type": "library",
@@ -1143,7 +1143,7 @@
                 }
             },
             "license": [
-                "My Custom License"
+                "proprietary"
             ],
             "authors": [
                 {
@@ -1153,10 +1153,10 @@
             ],
             "description": "A simple PHP package ",
             "support": {
-                "source": "https://github.com/yanivprusman/include/tree/1.0.2",
+                "source": "https://github.com/yanivprusman/include/tree/1.0.601",
                 "issues": "https://github.com/yanivprusman/include/issues"
             },
-            "time": "2024-05-11T07:23:08+00:00"
+            "time": "2024-05-18T13:46:13+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -4824,22 +4824,22 @@
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.9.2",
+            "version": "v3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
-                "reference": "39865e5d13165016a8e7ab8cc648ad2f7aa4b639"
+                "reference": "693f6beb8ca91fc6323e01b3addf983812f65c93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/39865e5d13165016a8e7ab8cc648ad2f7aa4b639",
-                "reference": "39865e5d13165016a8e7ab8cc648ad2f7aa4b639",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/693f6beb8ca91fc6323e01b3addf983812f65c93",
+                "reference": "693f6beb8ca91fc6323e01b3addf983812f65c93",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
                 "symfony/intl": "^5.4|^6.4|^7.0",
-                "twig/twig": "^3.9"
+                "twig/twig": "^3.10"
             },
             "require-dev": {
                 "symfony/phpunit-bridge": "^6.4|^7.0"
@@ -4872,7 +4872,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.9.2"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.10.0"
             },
             "funding": [
                 {
@@ -4884,20 +4884,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-17T12:41:53+00:00"
+            "time": "2024-05-11T07:35:57+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v3.9.3",
+            "version": "v3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "a842d75fed59cdbcbd3a3ad7fb9eb768fc350d58"
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a842d75fed59cdbcbd3a3ad7fb9eb768fc350d58",
-                "reference": "a842d75fed59cdbcbd3a3ad7fb9eb768fc350d58",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/67f29781ffafa520b0bbfbd8384674b42db04572",
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572",
                 "shasum": ""
             },
             "require": {
@@ -4951,7 +4951,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.9.3"
+                "source": "https://github.com/twigphp/Twig/tree/v3.10.3"
             },
             "funding": [
                 {
@@ -4963,7 +4963,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T11:59:33+00:00"
+            "time": "2024-05-16T10:04:27+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6790,5 +6790,5 @@
         "ext-pdo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
