@@ -13,7 +13,7 @@ use Slim\App;
 return function (App $app) {
     $app->get('/include/{file}', function($request, $response, $args){
         $file = $args['file'];
-        $file_path = __DIR__ . '/../../include/' . $file;
+        $file_path = __DIR__ . '/../../vendor/g_h_projects/include/' . $file;
         if (file_exists($file_path)) {
             include $file_path;
             return $response;
